@@ -1,0 +1,20 @@
+# Sample configuration file for the POS desktop application
+# Copy this file to pos-config.properties and customize the values as needed
+
+# API configuration
+# Base URL for the API
+api.baseUrl=http://localhost:8080/api
+
+# Security configuration
+# Manager PIN for authentication
+security.managerPin=1234
+# Manager PIN header name
+security.managerPinHeader=X-Manager-Pin
+
+# Database configuration
+# Path to the local database file
+database.path=almasa.db
+
+# Tax configuration
+# Tax rate (as a decimal, e.g., 0.1 for 10%)
+tax.rate=0.1

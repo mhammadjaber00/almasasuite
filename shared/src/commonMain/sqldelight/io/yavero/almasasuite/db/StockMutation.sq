@@ -1,0 +1,54 @@
+-- StockMutation table definition
+CREATE TABLE StockMutation (
+    id TEXT PRIMARY KEY NOT NULL,
+    product_id TEXT NOT NULL,
+    delta INTEGER NOT NULL,
+    reason TEXT NOT NULL,
+    timestamp INTEGER NOT NULL,
+    created_at INTEGER NOT NULL,
+    synced INTEGER NOT NULL DEFAULT 0,
+    FOREIGN KEY (product_id) REFERENCES Product(id) ON DELETE RESTRICT
+);
+
+-- Create index on product_id for faster lookups
+CREATE INDEX stock_mutation_product_idx ON StockMutation(product_id);
+
+-- Create index on timestamp for faster lookups
+CREATE INDEX stock_mutation_timestamp_idx ON StockMutation(timestamp);
+
+-- Get all stock mutations
+getAllStockMutations:
+SELECT * FROM StockMutation ORDER BY timestamp DESC;
+
+-- Get stock mutation by ID
+getStockMutationById:
+SELECT * FROM StockMutation WHERE id = ?;
+
+-- Get stock mutations for a product
+getStockMutationsByProductId:
+SELECT * FROM StockMutation WHERE product_id = ? ORDER BY timestamp DESC;
+
+-- Get stock mutations by reason
+getStockMutationsByReason:
+SELECT * FROM StockMutation WHERE reason = ? ORDER BY timestamp DESC;
+
+-- Get stock mutations by date range
+getStockMutationsByDateRange:
+SELECT * FROM StockMutation WHERE timestamp BETWEEN ? AND ? ORDER BY timestamp DESC;
+
+-- Get unsynced stock mutations
+getUnsyncedStockMutations:
+SELECT * FROM StockMutation WHERE synced = 0 ORDER BY timestamp;
+
+-- Insert a new stock mutation
+insertStockMutation:
+INSERT INTO StockMutation(id, product_id, delta, reason, timestamp, created_at, synced)
+VALUES (?, ?, ?, ?, ?, ?, ?);
+
+-- Mark stock mutation as synced
+markStockMutationAsSynced:
+UPDATE StockMutation SET synced = 1 WHERE id = ?;
+
+-- Delete a stock mutation
+deleteStockMutation:
+DELETE FROM StockMutation WHERE id = ?;

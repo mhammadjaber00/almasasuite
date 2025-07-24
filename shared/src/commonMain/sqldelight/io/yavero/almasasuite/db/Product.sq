@@ -1,0 +1,56 @@
+-- Product table definition
+CREATE TABLE Product (
+    id TEXT PRIMARY KEY NOT NULL,
+    sku TEXT NOT NULL UNIQUE,
+    name TEXT NOT NULL,
+    stone TEXT NOT NULL,
+    carat REAL NOT NULL,
+    weight REAL NOT NULL,
+    price REAL NOT NULL,
+    quantity_in_stock INTEGER NOT NULL DEFAULT 0,
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL
+);
+
+-- Create index on SKU for faster lookups
+CREATE INDEX product_sku_idx ON Product(sku);
+
+-- Create index on name for search functionality
+CREATE INDEX product_name_idx ON Product(name);
+
+-- Get all products
+getAllProducts:
+SELECT * FROM Product ORDER BY name;
+
+-- Get product by ID
+getProductById:
+SELECT * FROM Product WHERE id = ?;
+
+-- Get product by SKU
+getProductBySku:
+SELECT * FROM Product WHERE sku = ?;
+
+-- Search products by name
+searchProductsByName:
+SELECT * FROM Product WHERE name LIKE '%' || ? || '%' ORDER BY name;
+
+-- Insert a new product
+insertProduct:
+INSERT INTO Product(id, sku, name, stone, carat, weight, price, quantity_in_stock, created_at, updated_at)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+-- Update an existing product
+updateProduct:
+UPDATE Product
+SET sku = ?, name = ?, stone = ?, carat = ?, weight = ?, price = ?, quantity_in_stock = ?, updated_at = ?
+WHERE id = ?;
+
+-- Update product stock quantity
+updateProductStock:
+UPDATE Product
+SET quantity_in_stock = ?, updated_at = ?
+WHERE id = ?;
+
+-- Delete a product
+deleteProduct:
+DELETE FROM Product WHERE id = ?;

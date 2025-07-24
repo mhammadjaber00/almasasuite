@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>CyclomaticComplexMethod:GoldIntakeRoutes.kt$fun Route.goldIntakeRoutes()</ID>
+    <ID>CyclomaticComplexMethod:ProductRoutes.kt$fun Route.productRoutes()</ID>
+    <ID>CyclomaticComplexMethod:SalesRoutes.kt$fun Route.salesRoutes()</ID>
+    <ID>ImplicitDefaultLocale:GoldIntakeService.kt$GoldIntakeService$String.format("%.2f", request.amount)</ID>
+    <ID>ImplicitDefaultLocale:GoldIntakeService.kt$GoldIntakeService$String.format("%.2f", vendor.totalLiabilityBalance)</ID>
+    <ID>ImplicitDefaultLocale:VendorPayment.kt$String.format("%.2f", amount)</ID>
+    <ID>ThrowsCount:StatusPagesTest.kt$StatusPagesTest$private fun Application.testModule()</ID>
+    <ID>TooManyFunctions:GoldIntakeService.kt$GoldIntakeService</ID>
+    <ID>TooManyFunctions:ProductService.kt$ProductService</ID>
+    <ID>TooManyFunctions:SalesService.kt$SalesService</ID>
+    <ID>UseRequire:GoldIntakeService.kt$GoldIntakeService$throw IllegalArgumentException("Payment amount ($${String.format("%.2f", request.amount)}) exceeds vendor liability ($${String.format("%.2f", vendor.totalLiabilityBalance)})")</ID>
+  </CurrentIssues>
+</SmellBaseline>

@@ -1,0 +1,80 @@
+-- Sale table definition
+CREATE TABLE Sale (
+    id TEXT PRIMARY KEY NOT NULL,
+    date INTEGER NOT NULL,
+    total REAL NOT NULL,
+    payment_method TEXT NOT NULL,
+    created_at INTEGER NOT NULL,
+    synced INTEGER NOT NULL DEFAULT 0
+);
+
+-- SaleItem table definition
+CREATE TABLE SaleItem (
+    id TEXT PRIMARY KEY NOT NULL,
+    sale_id TEXT NOT NULL,
+    product_id TEXT NOT NULL,
+    quantity INTEGER NOT NULL,
+    unit_price REAL NOT NULL,
+    subtotal REAL NOT NULL,
+    FOREIGN KEY (sale_id) REFERENCES Sale(id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES Product(id) ON DELETE RESTRICT
+);
+
+-- Create index on sale_id for faster lookups
+CREATE INDEX sale_item_sale_idx ON SaleItem(sale_id);
+
+-- Create index on product_id for faster lookups
+CREATE INDEX sale_item_product_idx ON SaleItem(product_id);
+
+-- Get all sales
+getAllSales:
+SELECT * FROM Sale ORDER BY date DESC;
+
+-- Get sale by ID
+getSaleById:
+SELECT * FROM Sale WHERE id = ?;
+
+-- Get sale items for a sale
+getSaleItemsBySaleId:
+SELECT * FROM SaleItem WHERE sale_id = ?;
+
+-- Get sale with items
+getSaleWithItems:
+SELECT
+    s.*,
+    si.id AS item_id,
+    si.product_id,
+    si.quantity,
+    si.unit_price,
+    si.subtotal,
+    p.name AS product_name
+FROM Sale s
+LEFT JOIN SaleItem si ON s.id = si.sale_id
+LEFT JOIN Product p ON si.product_id = p.id
+WHERE s.id = ?;
+
+-- Get sales by date range
+getSalesByDateRange:
+SELECT * FROM Sale WHERE date BETWEEN ? AND ? ORDER BY date DESC;
+
+-- Get unsynced sales
+getUnsyncedSales:
+SELECT * FROM Sale WHERE synced = 0 ORDER BY date;
+
+-- Insert a new sale
+insertSale:
+INSERT INTO Sale(id, date, total, payment_method, created_at, synced)
+VALUES (?, ?, ?, ?, ?, ?);
+
+-- Insert a new sale item
+insertSaleItem:
+INSERT INTO SaleItem(id, sale_id, product_id, quantity, unit_price, subtotal)
+VALUES (?, ?, ?, ?, ?, ?);
+
+-- Mark sale as synced
+markSaleAsSynced:
+UPDATE Sale SET synced = 1 WHERE id = ?;
+
+-- Delete a sale (will cascade to sale items)
+deleteSale:
+DELETE FROM Sale WHERE id = ?;
