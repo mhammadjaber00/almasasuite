@@ -20,7 +20,6 @@ object StringResources {
     const val LOGIN = "login"
     const val LOGOUT = "logout"
     const val ENTER_PIN = "enter_pin"
-    const val ENTER_MANAGER_PIN = "enter_manager_pin"
     const val PIN = "pin"
     const val CONFIRM_LOGOUT = "confirm_logout"
     const val CONFIRM_LOGOUT_MESSAGE = "confirm_logout_message"

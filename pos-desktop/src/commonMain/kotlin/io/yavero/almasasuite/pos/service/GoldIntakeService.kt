@@ -1,8 +1,7 @@
 package io.yavero.almasasuite.pos.service
 
-import io.yavero.almasasuite.pos.config.PosConfig
 import io.yavero.almasasuite.model.GoldIntakeRequest
-import io.yavero.almasasuite.model.PartyType
+import io.yavero.almasasuite.pos.config.PosConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
@@ -35,7 +34,6 @@ class GoldIntakeService {
             val httpRequest = HttpRequest.newBuilder()
                 .uri(URI.create("${config.api.baseUrl}/gold-intake/intakes"))
                 .header("Content-Type", "application/json")
-                .header(config.security.managerPinHeader, config.security.managerPin)
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build()
 
@@ -80,7 +78,6 @@ class GoldIntakeService {
             val httpRequest = HttpRequest.newBuilder()
                 .uri(URI.create("${config.api.baseUrl}/gold-intake/payments"))
                 .header("Content-Type", "application/json")
-                .header(config.security.managerPinHeader, config.security.managerPin)
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build()
 
@@ -112,7 +109,6 @@ class GoldIntakeService {
         try {
             val httpRequest = HttpRequest.newBuilder()
                 .uri(URI.create("${config.api.baseUrl}/gold-intake/vendors"))
-                .header(config.security.managerPinHeader, config.security.managerPin)
                 .GET()
                 .build()
 

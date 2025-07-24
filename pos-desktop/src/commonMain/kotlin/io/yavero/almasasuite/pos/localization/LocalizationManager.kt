@@ -1,6 +1,7 @@
 package io.yavero.almasasuite.pos.localization
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.compositionLocalOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,7 +29,6 @@ class LocalizationManager {
         StringResources.LOGIN to "Login",
         StringResources.LOGOUT to "Logout",
         StringResources.ENTER_PIN to "Enter PIN",
-        StringResources.ENTER_MANAGER_PIN to "Enter Manager PIN",
         StringResources.PIN to "PIN",
         StringResources.CONFIRM_LOGOUT to "Confirm Logout",
         StringResources.CONFIRM_LOGOUT_MESSAGE to "Are you sure you want to logout?",
@@ -195,7 +195,6 @@ class LocalizationManager {
         StringResources.LOGIN to "تسجيل الدخول",
         StringResources.LOGOUT to "تسجيل الخروج",
         StringResources.ENTER_PIN to "أدخل الرقم السري",
-        StringResources.ENTER_MANAGER_PIN to "أدخل رقم المدير السري",
         StringResources.PIN to "الرقم السري",
         StringResources.CONFIRM_LOGOUT to "تأكيد تسجيل الخروج",
         StringResources.CONFIRM_LOGOUT_MESSAGE to "هل أنت متأكد من تسجيل الخروج؟",

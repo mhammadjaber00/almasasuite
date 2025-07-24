@@ -6,10 +6,7 @@
 api.baseUrl=http://localhost:8080/api
 
 # Security configuration
-# Manager PIN for authentication
-security.managerPin=1234
-# Manager PIN header name
-security.managerPinHeader=X-Manager-Pin
+# Manager pin functionality has been removed
 
 # Database configuration
 # Path to the local database file

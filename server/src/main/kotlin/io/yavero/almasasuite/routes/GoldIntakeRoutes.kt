@@ -1,14 +1,11 @@
 package io.yavero.almasasuite.routes
 
 import io.ktor.http.*
-import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import io.yavero.almasasuite.models.*
-import io.yavero.almasasuite.plugins.getManagerPinHeader
-import io.yavero.almasasuite.plugins.verifyManagerPin
-import io.yavero.almasasuite.plugins.getUserIdFromAuth
+import io.yavero.almasasuite.models.GoldIntakeRequest
+import io.yavero.almasasuite.models.VendorPaymentRequest
 import io.yavero.almasasuite.services.GoldIntakeService
 
 
@@ -18,15 +15,6 @@ fun Route.goldIntakeRoutes() {
     route("/gold-intake") {
 
         get("/vendors") {
-
-            val managerPinHeader = call.request.headers[getManagerPinHeader()]
-            if (!call.application.verifyManagerPin(managerPinHeader)) {
-                return@get call.respond(
-                    HttpStatusCode.Unauthorized,
-                    mapOf("error" to "Manager access required")
-                )
-            }
-
             val vendors = goldIntakeService.getAllVendors()
             call.respond(vendors)
         }
@@ -38,15 +26,6 @@ fun Route.goldIntakeRoutes() {
                 mapOf("error" to "Missing vendor ID")
             )
 
-
-            val managerPinHeader = call.request.headers[getManagerPinHeader()]
-            if (!call.application.verifyManagerPin(managerPinHeader)) {
-                return@get call.respond(
-                    HttpStatusCode.Unauthorized,
-                    mapOf("error" to "Manager access required")
-                )
-            }
-
             val vendor = goldIntakeService.getVendorById(id)
             if (vendor != null) {
                 call.respond(vendor)
@@ -57,15 +36,6 @@ fun Route.goldIntakeRoutes() {
 
 
         post("/intakes") {
-
-            val managerPinHeader = call.request.headers[getManagerPinHeader()]
-            if (!call.application.verifyManagerPin(managerPinHeader)) {
-                return@post call.respond(
-                    HttpStatusCode.Unauthorized,
-                    mapOf("error" to "Manager access required")
-                )
-            }
-
             val intakeRequest = call.receive<GoldIntakeRequest>()
 
 
@@ -78,8 +48,7 @@ fun Route.goldIntakeRoutes() {
             }
 
             try {
-                val managerPinHeader = call.request.headers[getManagerPinHeader()]
-                val recordedBy = call.application.getUserIdFromAuth(managerPinHeader)
+                val recordedBy = "system-user-id"
                 val intake = goldIntakeService.recordGoldIntake(intakeRequest, recordedBy)
                 call.respond(HttpStatusCode.Created, intake)
             } catch (e: IllegalArgumentException) {
@@ -97,30 +66,12 @@ fun Route.goldIntakeRoutes() {
 
 
         get("/intakes") {
-
-            val managerPinHeader = call.request.headers[getManagerPinHeader()]
-            if (!call.application.verifyManagerPin(managerPinHeader)) {
-                return@get call.respond(
-                    HttpStatusCode.Unauthorized,
-                    mapOf("error" to "Manager access required")
-                )
-            }
-
             val intakes = goldIntakeService.getAllGoldIntakes()
             call.respond(intakes)
         }
 
 
         post("/payments") {
-
-            val managerPinHeader = call.request.headers[getManagerPinHeader()]
-            if (!call.application.verifyManagerPin(managerPinHeader)) {
-                return@post call.respond(
-                    HttpStatusCode.Unauthorized,
-                    mapOf("error" to "Manager access required")
-                )
-            }
-
             val paymentRequest = call.receive<VendorPaymentRequest>()
 
 
@@ -133,8 +84,7 @@ fun Route.goldIntakeRoutes() {
             }
 
             try {
-                val managerPinHeader = call.request.headers[getManagerPinHeader()]
-                val recordedBy = call.application.getUserIdFromAuth(managerPinHeader)
+                val recordedBy = "system-user-id"
                 val payment = goldIntakeService.recordVendorPayment(paymentRequest, recordedBy)
                 call.respond(HttpStatusCode.Created, payment)
             } catch (e: IllegalArgumentException) {
@@ -152,15 +102,6 @@ fun Route.goldIntakeRoutes() {
 
 
         get("/payments") {
-
-            val managerPinHeader = call.request.headers[getManagerPinHeader()]
-            if (!call.application.verifyManagerPin(managerPinHeader)) {
-                return@get call.respond(
-                    HttpStatusCode.Unauthorized,
-                    mapOf("error" to "Manager access required")
-                )
-            }
-
             val vendorId = call.request.queryParameters["vendorId"]
             val payments = goldIntakeService.getVendorPayments(vendorId)
             call.respond(payments)
@@ -168,30 +109,12 @@ fun Route.goldIntakeRoutes() {
 
 
         get("/liability-report") {
-
-            val managerPinHeader = call.request.headers[getManagerPinHeader()]
-            if (!call.application.verifyManagerPin(managerPinHeader)) {
-                return@get call.respond(
-                    HttpStatusCode.Unauthorized,
-                    mapOf("error" to "Manager access required")
-                )
-            }
-
             val liabilityReport = goldIntakeService.getLiabilityReport()
             call.respond(liabilityReport)
         }
 
 
         post("/reduce-liability") {
-
-            val managerPinHeader = call.request.headers[getManagerPinHeader()]
-            if (!call.application.verifyManagerPin(managerPinHeader)) {
-                return@post call.respond(
-                    HttpStatusCode.Unauthorized,
-                    mapOf("error" to "Manager access required")
-                )
-            }
-
             val request = call.receive<ReduceLiabilityRequest>()
 
             if (request.vendorId.isBlank() || request.metalValueSold <= 0) {

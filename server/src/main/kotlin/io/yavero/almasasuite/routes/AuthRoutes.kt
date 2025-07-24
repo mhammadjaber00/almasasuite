@@ -4,16 +4,16 @@ import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import io.yavero.almasasuite.models.*
 import io.yavero.almasasuite.model.UserRole
+import io.yavero.almasasuite.models.*
 import io.yavero.almasasuite.plugins.dbQuery
 import io.yavero.almasasuite.plugins.hashPassword
 import io.yavero.almasasuite.plugins.verifyPassword
-import io.yavero.almasasuite.plugins.getUserIdFromAuth
-import io.yavero.almasasuite.plugins.getManagerPinHeader
 import kotlinx.datetime.Clock
-import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.update
 import java.util.*
 
 
@@ -113,8 +113,7 @@ fun Route.authRoutes() {
                     it[isActive] = true
                     it[createdAt] = now
                     it[updatedAt] = now
-                    val managerPinHeader = call.request.headers[getManagerPinHeader()]
-                    it[createdBy] = call.application.getUserIdFromAuth(managerPinHeader)
+                    it[createdBy] = "system-user-id"
                 }
             }
 
