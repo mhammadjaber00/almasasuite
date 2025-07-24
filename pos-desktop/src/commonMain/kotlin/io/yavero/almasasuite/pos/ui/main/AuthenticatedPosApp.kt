@@ -6,31 +6,33 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.dp
 import io.yavero.almasasuite.model.AuthenticatedUser
 import io.yavero.almasasuite.model.UserRole
-import io.yavero.almasasuite.pos.localization.*
-import io.yavero.almasasuite.pos.ui.components.CompactLanguageSwitcher
-import io.yavero.almasasuite.pos.ui.inventory.StandaloneInventoryScreen
-import io.yavero.almasasuite.pos.ui.sales.DailySalesLoggingScreen
-import io.yavero.almasasuite.pos.ui.reports.DailySummaryScreen
-import io.yavero.almasasuite.pos.ui.purchases.PurchasesScreen
-import io.yavero.almasasuite.pos.service.SalesSubmissionService
+import io.yavero.almasasuite.pos.localization.LocalLocalizationManager
+import io.yavero.almasasuite.pos.localization.LocalizationManager
+import io.yavero.almasasuite.pos.localization.StringResources
+import io.yavero.almasasuite.pos.localization.getString
 import io.yavero.almasasuite.pos.service.SalesSubmissionResult
+import io.yavero.almasasuite.pos.service.SalesSubmissionService
+import io.yavero.almasasuite.pos.ui.components.CompactLanguageSwitcher
+import io.yavero.almasasuite.pos.ui.inventory.InventoryScreen
+import io.yavero.almasasuite.pos.ui.purchases.PurchasesScreen
+import io.yavero.almasasuite.pos.ui.reports.DailySummaryScreen
+import io.yavero.almasasuite.pos.ui.sales.DailySalesLoggingScreen
 import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AuthenticatedPosApp(
+fun AuthenticatedApp(
     user: AuthenticatedUser,
     onLogout: () -> Unit
 ) {
@@ -41,14 +43,14 @@ fun AuthenticatedPosApp(
         val layoutDirection = if (currentLanguage.isRtl) LayoutDirection.Rtl else LayoutDirection.Ltr
 
         CompositionLocalProvider(LocalLayoutDirection provides layoutDirection) {
-            AuthenticatedPosAppContent(user = user, onLogout = onLogout)
+            AuthenticatedAppContent(user = user, onLogout = onLogout)
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun AuthenticatedPosAppContent(
+private fun AuthenticatedAppContent(
     user: AuthenticatedUser,
     onLogout: () -> Unit
 ) {
@@ -180,9 +182,9 @@ private fun AuthenticatedPosAppContent(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     when (user.role) {
-                        UserRole.STAFF -> StaffPosInterface(user)
-                        UserRole.MANAGER -> ManagerPosInterface(user)
-                        UserRole.ADMIN -> AdminPosInterface(user)
+                        UserRole.STAFF -> StaffInterface(user)
+                        UserRole.MANAGER -> ManagerInterface(user)
+                        UserRole.ADMIN -> AdminInterface(user)
                     }
                 }
             }
@@ -192,7 +194,7 @@ private fun AuthenticatedPosAppContent(
 
 
 @Composable
-private fun StaffPosInterface(user: AuthenticatedUser) {
+private fun StaffInterface(user: AuthenticatedUser) {
     var currentScreen by remember { mutableStateOf(StaffScreen.DAILY_SALES) }
     val salesService = remember { SalesSubmissionService() }
     val coroutineScope = rememberCoroutineScope()
@@ -300,7 +302,7 @@ private fun StaffPosInterface(user: AuthenticatedUser) {
 
 
 @Composable
-private fun ManagerPosInterface(user: AuthenticatedUser) {
+private fun ManagerInterface(user: AuthenticatedUser) {
     var currentScreen by remember { mutableStateOf(ManagerScreen.INVENTORY) }
     val salesService = remember { SalesSubmissionService() }
     val coroutineScope = rememberCoroutineScope()
@@ -349,7 +351,7 @@ private fun ManagerPosInterface(user: AuthenticatedUser) {
         ) {
             when (currentScreen) {
                 ManagerScreen.INVENTORY -> {
-                    StandaloneInventoryScreen(user)
+                    InventoryScreen(user)
                 }
                 ManagerScreen.DAILY_SALES -> {
                     Box(modifier = Modifier.padding(16.dp)) {
@@ -451,7 +453,7 @@ private fun ManagerPosInterface(user: AuthenticatedUser) {
 
 
 @Composable
-private fun AdminPosInterface(user: AuthenticatedUser) {
+private fun AdminInterface(user: AuthenticatedUser) {
     var currentScreen by remember { mutableStateOf(AdminScreen.INVENTORY) }
     val salesService = remember { SalesSubmissionService() }
     val coroutineScope = rememberCoroutineScope()
@@ -500,7 +502,7 @@ private fun AdminPosInterface(user: AuthenticatedUser) {
         ) {
             when (currentScreen) {
                 AdminScreen.INVENTORY -> {
-                    StandaloneInventoryScreen(user)
+                    InventoryScreen(user)
                 }
                 AdminScreen.DAILY_SALES -> {
                     Box(modifier = Modifier.padding(16.dp)) {

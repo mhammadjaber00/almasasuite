@@ -1013,7 +1013,7 @@ build-and-test:
 **Step 3: Setup Gradle**
 ```yaml
 - name: Setup Gradle
-  uses: gradle/gradle-build-action@v3
+  uses: gradle/setup-gradle@v4
   with:
     gradle-version: 8.9
 ```

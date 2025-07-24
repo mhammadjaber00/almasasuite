@@ -1,22 +1,26 @@
 package io.yavero.almasasuite.pos.ui.inventory
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.launch
 import io.yavero.almasasuite.model.AuthenticatedUser
 import io.yavero.almasasuite.pos.localization.StringResources
 import io.yavero.almasasuite.pos.localization.getString
-import io.yavero.almasasuite.pos.viewmodel.JewelryPosViewModel
 import io.yavero.almasasuite.pos.ui.jewelry.JewelryProductFormDialog
+import io.yavero.almasasuite.pos.viewmodel.JewelryPosViewModel
+import kotlinx.coroutines.launch
 
 
 @Composable
-fun StandaloneInventoryScreen(
+fun InventoryScreen(
     user: AuthenticatedUser
 ) {
     val viewModel = remember { JewelryPosViewModel() }

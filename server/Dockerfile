@@ -11,7 +11,7 @@ RUN addgroup -S almasa && adduser -S almasa -G almasa
 USER almasa
 
 # Copy the JAR file from the build context to the container
-COPY --chown=almasa:almasa server/build/libs/*.jar app.jar
+COPY --chown=almasa:almasa build/libs/*.jar app.jar
 
 # Expose the port the app runs on
 EXPOSE 8080

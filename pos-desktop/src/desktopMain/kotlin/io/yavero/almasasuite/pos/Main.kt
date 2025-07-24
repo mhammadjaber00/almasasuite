@@ -1,14 +1,14 @@
 package io.yavero.almasasuite.pos
 
 import androidx.compose.runtime.*
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import androidx.compose.ui.unit.DpSize
-import androidx.compose.ui.unit.dp
 import io.yavero.almasasuite.model.AuthenticatedUser
 import io.yavero.almasasuite.pos.ui.auth.PinPadScreen
-import io.yavero.almasasuite.pos.ui.main.AuthenticatedPosApp
+import io.yavero.almasasuite.pos.ui.main.AuthenticatedApp
 
 
 fun main() = application {
@@ -37,7 +37,7 @@ fun AlmasaPosApplication() {
             }
         )
     } else {
-        AuthenticatedPosApp(
+        AuthenticatedApp(
             user = authenticatedUser!!,
             onLogout = {
                 authenticatedUser = null
