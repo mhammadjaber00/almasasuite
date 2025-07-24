@@ -85,7 +85,6 @@ class JewelryProductRepository {
 
             val response = client.post("$apiUrl/products") {
                 contentType(ContentType.Application.Json)
-                header(managerPinHeader, managerPin)
                 setBody(serverRequest)
             }
 
@@ -118,7 +117,6 @@ class JewelryProductRepository {
 
             val response = client.put("$apiUrl/products/$id") {
                 contentType(ContentType.Application.Json)
-                header(managerPinHeader, managerPin)
                 setBody(serverRequest)
             }
 
@@ -139,7 +137,6 @@ class JewelryProductRepository {
         try {
             val response = client.patch("$apiUrl/products/$id/stock") {
                 contentType(ContentType.Application.Json)
-                header(managerPinHeader, managerPin)
                 setBody(StockAdjustmentRequest(delta))
             }
 
@@ -158,9 +155,7 @@ class JewelryProductRepository {
 
     suspend fun deleteJewelryProduct(id: String): Boolean = withContext(Dispatchers.IO) {
         try {
-            val response = client.delete("$apiUrl/products/$id") {
-                header(managerPinHeader, managerPin)
-            }
+            val response = client.delete("$apiUrl/products/$id")
 
             response.status.isSuccess()
         } catch (e: Exception) {
@@ -170,9 +165,6 @@ class JewelryProductRepository {
     }
 
 
-    fun setManagerPin(pin: String) {
-        this.managerPin = pin
-    }
 
 
     fun convertToProduct(jewelryProduct: JewelryProduct): Product {

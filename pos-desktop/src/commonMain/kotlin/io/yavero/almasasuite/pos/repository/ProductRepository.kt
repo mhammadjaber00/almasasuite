@@ -105,8 +105,6 @@ class ProductRepository {
     private val apiUrl = config.api.baseUrl
 
 
-    private val managerPinHeader = config.security.managerPinHeader
-    private var managerPin = config.security.managerPin
 
 
 
@@ -162,7 +160,6 @@ class ProductRepository {
         try {
             val response = client.post("$apiUrl/products") {
                 contentType(ContentType.Application.Json)
-                header(managerPinHeader, managerPin)
                 setBody(product)
             }
 
@@ -182,7 +179,6 @@ class ProductRepository {
         try {
             val response = client.put("$apiUrl/products/$id") {
                 contentType(ContentType.Application.Json)
-                header(managerPinHeader, managerPin)
                 setBody(product)
             }
 
@@ -202,7 +198,6 @@ class ProductRepository {
         try {
             val response = client.patch("$apiUrl/products/$id/stock") {
                 contentType(ContentType.Application.Json)
-                header(managerPinHeader, managerPin)
                 setBody(StockAdjustmentRequest(delta))
             }
 
@@ -218,9 +213,4 @@ class ProductRepository {
     }
 
 
-    fun setManagerPin(pin: String) {
-
-
-        this.managerPin = pin
-    }
 }

@@ -1,7 +1,7 @@
 package io.yavero.almasasuite.pos.config
 
 import java.io.File
-import java.util.Properties
+import java.util.*
 
 
 class PosConfig private constructor(private val properties: Properties) {
@@ -28,14 +28,7 @@ class PosConfig private constructor(private val properties: Properties) {
 
 
     inner class SecurityConfig {
-
-
-        val managerPin: String
-            get() = properties.getProperty("security.managerPin", "1234")
-
-
-        val managerPinHeader: String
-            get() = properties.getProperty("security.managerPinHeader", "X-Manager-Pin")
+        // Manager pin functionality has been removed
     }
 
 
